@@ -274,16 +274,6 @@ conflicts = [
         { extra = "tace" },
         { extra = "dpa" },
     ],
-    # UPET's pinned metatrain dependencies require torch<2.13.
-    [
-        { extra = "tace" },
-        { extra = "upet" },
-    ],
-    # UMA requires torch~=2.13.0, but UPET requires torch<2.13.
-    [
-        { extra = "uma" },
-        { extra = "upet" },
-    ],
     [
         { group = "aimnet" },
         { extra = "upet" },
