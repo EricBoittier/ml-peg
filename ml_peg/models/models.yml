@@ -427,7 +427,7 @@ orb-v3-direct-inf-omat:
     name: "orb_v3_direct_inf_omat"
 
 pet-mad:
-  module: upet.calculator
+  module: upet.ase
   class_name: UPETCalculator
   datasets: [MAD]
   device: "auto"
@@ -440,7 +440,7 @@ pet-mad:
     xc: pbesol
 
 pet-mad-s-1p5:
-  module: upet.calculator
+  module: upet.ase
   class_name: UPETCalculator
   datasets: [OMAT, MAD-1p5]
   device: "auto"
@@ -453,7 +453,7 @@ pet-mad-s-1p5:
     xc: r2scan
 
 pet-oam-xl:
-  module: upet.calculator
+  module: upet.ase
   class_name: UPETCalculator
   datasets: [MPtrj, sAlex, OMAT]
   additional_supported_elements: ["Po", "At", "Rn", "Fr", "Ra", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No"]

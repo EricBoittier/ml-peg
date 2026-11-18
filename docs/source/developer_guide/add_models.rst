@@ -367,7 +367,7 @@ PET-MAD entries use UPET's ``UPETCalculator``:
 .. code-block:: yaml
 
    pet-mad:
-     module: upet.calculator
+     module: upet.ase
      class_name: UPETCalculator
      device: auto
      trained_on_dispersion: false
