@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import copy
 import dataclasses
-from functools import cache, wraps
+from functools import cache
 import hashlib
 import importlib
 from importlib.util import find_spec
@@ -341,48 +341,6 @@ def check_precision(precision: str) -> None:
         raise ValueError(
             f"Invalid precision '{precision}'. Must be one of {get_args(Precision)}."
         )
-
-
-def _patch_metatomic_nvalchemi_max_neighbors() -> None:
-    """
-    Make metatomic's CUDA neighbor-list call compatible with nvalchemi.
-
-    ``metatomic-ase`` computes ``max_neighbors`` using ``cutoff**3``. For
-    cutoffs above roughly 5 Å this produces a float, while nvalchemi requires
-    an integer tensor dimension. PET-OAM uses a 10 Å cutoff.
-    """
-    import metatomic_ase._neighbors as metatomic_neighbors
-
-    neighbor_list = metatomic_neighbors.nvalchemi_neighbor_list
-    if getattr(neighbor_list, "_ml_peg_integer_max_neighbors", False):
-        return
-
-    @wraps(neighbor_list)
-    def neighbor_list_with_integer_max_neighbors(*args: Any, **kwargs: Any) -> Any:
-        """
-        Convert nvalchemi's maximum-neighbor estimate to an integer.
-
-        Parameters
-        ----------
-        *args
-            Positional arguments forwarded to the original neighbor-list function.
-        **kwargs
-            Keyword arguments forwarded to the original neighbor-list function.
-
-        Returns
-        -------
-        Any
-            The result from the original neighbor-list function.
-        """
-        max_neighbors = kwargs.get("max_neighbors")
-        if max_neighbors is not None:
-            kwargs["max_neighbors"] = int(max_neighbors)
-        return neighbor_list(*args, **kwargs)
-
-    neighbor_list_with_integer_max_neighbors._ml_peg_integer_max_neighbors = True
-    metatomic_neighbors.nvalchemi_neighbor_list = (
-        neighbor_list_with_integer_max_neighbors
-    )
 
 
 # Modules providing the GPU kernels of each nequip modifier, in order of preference:
@@ -1301,7 +1259,6 @@ class UPETCalc(GenericASECalc):
         if self.default_dtype is not None:
             kwargs["dtype"] = self.default_dtype
 
-        _patch_metatomic_nvalchemi_max_neighbors()
         return self.load_calculator(**kwargs)
 
 

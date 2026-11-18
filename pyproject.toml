@@ -106,7 +106,7 @@ uma = [
     "fairchem-core == 2.25.0",
 ]
 upet = [
-    "upet==0.2.4",
+    "upet==0.3.1",
 ]
 sevenn = [
     "sevenn==0.12.1",
@@ -273,16 +273,6 @@ conflicts = [
     [
         { extra = "tace" },
         { extra = "dpa" },
-    ],
-    # UPET's pinned metatrain dependencies require torch<2.13.
-    [
-        { extra = "tace" },
-        { extra = "upet" },
-    ],
-    # UMA requires torch~=2.13.0, but UPET requires torch<2.13.
-    [
-        { extra = "uma" },
-        { extra = "upet" },
     ],
     [
         { group = "aimnet" },
